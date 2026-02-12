@@ -3,156 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>MCA Syllabus Tracker</title>
-    <style>
-        :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --primary: #bb86fc;
-            --secondary: #03dac6;
-            --text: #e0e0e0;
-            --muted: #757575;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text);
-            font-family: 'Inter', -apple-system, sans-serif;
-            line-height: 1.6;
-            padding: 40px 20px;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        h1 { color: var(--primary); text-align: center; margin-bottom: 40px; }
-        h2 { color: var(--secondary); border-left: 4px solid var(--secondary); padding-left: 15px; margin-top: 40px; }
-        h3 { color: #cf6679; margin-left: 10px; font-size: 1.1rem; }
-
-        .section { 
-            background: var(--card-bg); 
-            padding: 25px; 
-            border-radius: 12px; 
-            margin-bottom: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
-        ul { list-style-type: none; padding: 0; }
-        
-        li { 
-            background: rgba(255,255,255,0.03);
-            margin-bottom: 10px; 
-            padding: 12px;
-            border-radius: 6px;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-        }
-
-        li:hover { background: rgba(255,255,255,0.08); }
-
-        input[type="checkbox"] { 
-            width: 18px; 
-            height: 18px; 
-            margin-right: 15px; 
-            cursor: pointer;
-            accent-color: var(--secondary);
-        }
-
-        label { cursor: pointer; flex-grow: 1; }
-
-        input[type="checkbox"]:checked + label { 
-            text-decoration: line-through; 
-            color: var(--muted); 
-        }
-
-        .progress-container {
-            position: sticky;
-            top: 10px;
-            background: var(--primary);
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            text-align: center;
-            z-index: 1000;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(187, 134, 252, 0.4);
-        }
-    </style>
 </head>
 <body>
 
-    <div class="progress-container" id="stat-bar">
-        Progress: <span id="percent">0</span>% Completed
+<div class="container">
+    <div class="header-box">
+        <h1>MCA Entrance Tracker</h1>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-label">Days to Exam</span>
+                <div id="countdown" class="countdown-text">--</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Completion</span>
+                <div class="percent-text"><span id="percent">0</span>%</div>
+            </div>
+        </div>
     </div>
 
-    <h1>MCA Entrance Syllabus</h1>
+    <div id="syllabus-content"></div>
+</div>
 
-    <div id="syllabus-content">
-        </div>
+<script src="script.js"></script>
 
-    <script>
-        const syllabusData = [
-            {
-                title: "Thinking and Decision Making",
-                topics: ["Creative thinking", "Verbal reasoning", "Patterns and trends", "Assessment of figures", "Geometrical designs", "Selection of related items", "Odd one out", "Numerical series", "Syllogisms", "Logic selection"]
-            },
-            {
-                title: "Mathematics: Sets & Probability",
-                topics: ["Set Theory: Union & Intersection", "Permutations & Combinations", "Probability Theory", "Averages & Events", "Frequency distributions"]
-            },
-            {
-                title: "Mathematics: Algebra & Calculus",
-                topics: ["Algebra: Factorization & Equations", "Logarithms & Progressions", "Matrices & Determinants", "Coordinate Geometry", "Calculus: Limits & Continuity", "Differentiation", "Integration & Areas"]
-            },
-            {
-                title: "Computer: OS & Data Structures",
-                topics: ["OS: Processes & Threads", "Deadlock & Banker’s algorithm", "Memory management", "File Systems", "Arrays & Linked Lists", "Trees (Binary, AVL, B+)", "Sorting & Searching"]
-            },
-            {
-                title: "Computer: Digital Fundamentals",
-                topics: ["Number Systems & Conversions", "Logic Gates & Boolean Algebra", "Combinational Circuits", "Flip-Flops & Sequential Circuits", "Registers & Counters"]
-            }
-        ];
-
-        const container = document.getElementById('syllabus-content');
-
-        // Render Syllabus
-        syllabusData.forEach((section, sIdx) => {
-            let html = `<div class="section"><h2>${section.title}</h2><ul>`;
-            section.topics.forEach((topic, tIdx) => {
-                const id = `item-${sIdx}-${tIdx}`;
-                html += `
-                    <li>
-                        <input type="checkbox" id="${id}" class="task-check">
-                        <label for="${id}">${topic}</label>
-                    </li>`;
-            });
-            html += `</ul></div>`;
-            container.innerHTML += html;
-        });
-
-        const checkboxes = document.querySelectorAll('.task-check');
-
-        // Load Save State
-        checkboxes.forEach(box => {
-            if (localStorage.getItem(box.id) === 'true') {
-                box.checked = true;
-            }
-            box.addEventListener('change', () => {
-                localStorage.setItem(box.id, box.checked);
-                updateProgress();
-            });
-        });
-
-        function updateProgress() {
-            const total = checkboxes.length;
-            const checked = document.querySelectorAll('.task-check:checked').length;
-            const percentage = Math.round((checked / total) * 100);
-            document.getElementById('percent').innerText = percentage;
-        }
-
-        updateProgress();
-    </script>
 </body>
 </html>
